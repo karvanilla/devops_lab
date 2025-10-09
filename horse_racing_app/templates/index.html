@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Главная - Скачки{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">Добро пожаловать в клуб любителей скачек!</div>
+    <div class="card-body">
+        <div class="grid">
+            <div class="card">
+                <div class="card-header">Статистика</div>
+                <div class="card-body">
+                    <p><strong>Количество состязаний:</strong> {{ competitions|length }}</p>
+                    <p><strong>Количество жокеев:</strong> {{ jockeys_count }}</p>
+                    <p><strong>Количество лошадей:</strong> {{ horses_count }}</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">Быстрые действия</div>
+                <div class="card-body">
+                    <a href="{{ url_for('add_competition') }}" class="btn" style="display: block; margin-bottom: 10px;">Добавить состязание</a>
+                    <a href="{{ url_for('add_jockey') }}" class="btn" style="display: block; margin-bottom: 10px;">Добавить жокея</a>
+                    <a href="{{ url_for('add_horse') }}" class="btn" style="display: block; margin-bottom: 10px;">Добавить лошадь</a>
+                    <a href="{{ url_for('add_result') }}" class="btn" style="display: block;">Добавить результат</a>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="page-title">Последние состязания</h2>
+        
+        <div class="grid">
+            {% for competition in competitions %}
+            <div class="card">
+                <div class="card-header">{{ competition.name }}</div>
+                <div class="card-body">
+                    <p><strong>Дата:</strong> {{ competition.date }}</p>
+                    <p><strong>Время:</strong> {{ competition.time }}</p>
+                    <p><strong>Место:</strong> {{ competition.location }}</p>
+                    <a href="{{ url_for('competition_results', competition_id=competition.id) }}" class="btn">
+                        Посмотреть результаты
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

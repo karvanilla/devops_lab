@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Состязания лошади - Скачки{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">Состязания лошади: {{ horse.name }}</div>
+    <div class="card-body">
+        <p><strong>Возраст:</strong> {{ horse.age }}</p>
+        <p><strong>Пол:</strong> {{ 'Жеребец' if horse.gender == 'male' else 'Кобыла' }}</p>
+        <p><strong>Владелец:</strong> {{ horse.owner.name }}</p>
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Состязание</th>
+                    <th>Дата</th>
+                    <th>Жокей</th>
+                    <th>Место</th>
+                    <th>Время</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ result.competition.name }}</td>
+                    <td>{{ result.competition.date }}</td>
+                    <td>{{ result.jockey.name }}</td>
+                    <td>{{ result.position }}</td>
+                    <td>{{ result.time }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

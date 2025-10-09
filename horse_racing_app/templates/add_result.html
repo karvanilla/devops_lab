@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Добавить результат - Скачки{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">Добавить результат состязания</div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="form-group">
+                <label for="competition_id" class="form-label">Состязание</label>
+                <select id="competition_id" name="competition_id" class="form-control" required>
+                    {% for competition in competitions %}
+                    <option value="{{ competition.id }}">{{ competition.name }} - {{ competition.date }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="jockey_id" class="form-label">Жокей</label>
+                <select id="jockey_id" name="jockey_id" class="form-control" required>
+                    {% for jockey in jockeys %}
+                    <option value="{{ jockey.id }}">{{ jockey.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="horse_id" class="form-label">Лошадь</label>
+                <select id="horse_id" name="horse_id" class="form-control" required>
+                    {% for horse in horses %}
+                    <option value="{{ horse.id }}">{{ horse.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="position" class="form-label">Место</label>
+                <input type="number" id="position" name="position" class="form-control" required min="1">
+            </div>
+            <div class="form-group">
+                <label for="time" class="form-label">Время</label>
+                <input type="text" id="time" name="time" class="form-control" required placeholder="например, 2:15.30">
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить результат</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

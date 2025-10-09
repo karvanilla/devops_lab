@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Добавить владельца - Скачки{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">Добавить нового владельца</div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="form-group">
+                <label for="name" class="form-label">Имя владельца</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="address" class="form-label">Адрес</label>
+                <input type="text" id="address" name="address" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="phone" class="form-label">Телефон</label>
+                <input type="text" id="phone" name="phone" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить владельца</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

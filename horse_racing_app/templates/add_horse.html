@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Добавить лошадь - Скачки{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">Добавить новую лошадь</div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="form-group">
+                <label for="name" class="form-label">Кличка лошади</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="gender" class="form-label">Пол</label>
+                <select id="gender" name="gender" class="form-control" required>
+                    <option value="male">Жеребец</option>
+                    <option value="female">Кобыла</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="age" class="form-label">Возраст</label>
+                <input type="number" id="age" name="age" class="form-control" required min="1" max="30">
+            </div>
+            <div class="form-group">
+                <label for="owner_id" class="form-label">Владелец</label>
+                <select id="owner_id" name="owner_id" class="form-control" required>
+                    {% for owner in owners %}
+                    <option value="{{ owner.id }}">{{ owner.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить лошадь</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

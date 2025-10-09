@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Добавить жокея - Скачки{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">Добавить нового жокея</div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="form-group">
+                <label for="name" class="form-label">Имя жокея</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="address" class="form-label">Адрес</label>
+                <input type="text" id="address" name="address" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="age" class="form-label">Возраст</label>
+                <input type="number" id="age" name="age" class="form-control" required min="16" max="70">
+            </div>
+            <div class="form-group">
+                <label for="rating" class="form-label">Рейтинг</label>
+                <input type="number" id="rating" name="rating" class="form-control" required min="0" max="10" step="0.1">
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить жокея</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

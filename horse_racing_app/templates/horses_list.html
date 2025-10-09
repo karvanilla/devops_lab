@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Список лошадей - Скачки{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">Список лошадей</div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Кличка</th>
+                    <th>Пол</th>
+                    <th>Возраст</th>
+                    <th>Владелец</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for horse in horses %}
+                <tr>
+                    <td>{{ horse.name }}</td>
+                    <td>{{ 'Жеребец' if horse.gender == 'male' else 'Кобыла' }}</td>
+                    <td>{{ horse.age }}</td>
+                    <td>{{ horse.owner.name }}</td>
+                    <td>
+                        <a href="{{ url_for('horse_competitions', horse_id=horse.id) }}" class="btn">
+                            Посмотреть состязания
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
