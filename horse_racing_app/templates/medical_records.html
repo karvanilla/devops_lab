@@ -1,50 +1,55 @@
+# Создайте новый исправленный шаблон без редактирования/удаления
+@'
 {% extends "base.html" %}
 
-{% block content %}
-<h2>Медицинские записи</h2>
-<a href="{{ url_for('add_medical_record') }}" class="btn btn-success mb-3">Добавить запись</a>
+{% block title %}Медицинские записи{% endblock %}
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Дата осмотра</th>
-            <th>Лошадь</th>
-            <th>Ветеринар</th>
-            <th>Диагноз</th>
-            <th>Состояние</th>
-            <th>Следующий осмотр</th>
-            <th>Действия</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for record in records %}
-        <tr>
-            <td>{{ record.checkup_date.strftime('%d.%m.%Y') }}</td>
-            <td>{{ record.horse.name }}</td>
-            <td>{{ record.veterinarian }}</td>
-            <td>{{ record.diagnosis[:50] }}{% if record.diagnosis|length > 50 %}...{% endif %}</td>
-            <td>
-                {% if record.is_healthy %}
-                <span class="badge bg-success">Здорова</span>
-                {% else %}
-                <span class="badge bg-danger">Требует лечения</span>
-                {% endif %}
-            </td>
-            <td>
-                {% if record.next_checkup_date %}
-                {{ record.next_checkup_date.strftime('%d.%m.%Y') }}
-                {% else %}
-                Не назначено
-                {% endif %}
-            </td>
-            <td>
-                <a href="{{ url_for('edit_medical_record', id=record.id) }}" class="btn btn-sm btn-warning">Редактировать</a>
-                <form action="{{ url_for('delete_medical_record', id=record.id) }}" method="POST" style="display:inline;">
-                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Удалить запись?')">Удалить</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+{% block content %}
+<div class="container mt-4">
+    <h2>Медицинские записи лошадей</h2>
+    
+    <a href="{{ url_for('add_medical_record') }}" class="btn btn-primary mb-3">
+        Добавить новую запись
+    </a>
+    
+    {% if records %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Дата осмотра</th>
+                <th>Лошадь</th>
+                <th>Ветеринар</th>
+                <th>Диагноз</th>
+                <th>Состояние</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ record.checkup_date }}</td>
+                <td>{{ record.horse.name }}</td>
+                <td>{{ record.veterinarian }}</td>
+                <td>
+                    {{ record.diagnosis[:50] }}
+                    {% if record.diagnosis|length > 50 %}...{% endif %}
+                </td>
+                <td>
+                    {% if record.is_healthy %}
+                    <span class="badge bg-success">Здорова</span>
+                    {% else %}
+                    <span class="badge bg-warning">На лечении</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-info">
+        Нет медицинских записей. 
+        <a href="{{ url_for('add_medical_record') }}">Добавить первую запись</a>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}
+'@ | Out-File -FilePath "templates/medical_records_fixed.html" -Encoding UTF8

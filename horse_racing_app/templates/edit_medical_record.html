@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Редактировать медицинскую запись{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Редактировать медицинскую запись</h2>
+
+    <form method="POST">
+        <div class="mb-3">
+            <label for="horse_id" class="form-label">Лошадь</label>
+            <select class="form-control" id="horse_id" name="horse_id" required>
+                {% for horse in horses %}
+                <option value="{{ horse.id }}" {% if horse.id == record.horse_id %}selected{% endif %}>
+                    {{ horse.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="checkup_date" class="form-label">Дата осмотра</label>
+            <input type="date" class="form-control" id="checkup_date" name="checkup_date"
+                   value="{{ record.checkup_date }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="veterinarian" class="form-label">Ветеринар</label>
+            <input type="text" class="form-control" id="veterinarian" name="veterinarian"
+                   value="{{ record.veterinarian }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="diagnosis" class="form-label">Диагноз</label>
+            <textarea class="form-control" id="diagnosis" name="diagnosis" rows="3">{{ record.diagnosis }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="treatment" class="form-label">Лечение</label>
+            <textarea class="form-control" id="treatment" name="treatment" rows="3">{{ record.treatment }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="next_checkup_date" class="form-label">Следующий осмотр</label>
+            <input type="date" class="form-control" id="next_checkup_date" name="next_checkup_date"
+                   value="{{ record.next_checkup_date }}">
+        </div>
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="is_healthy" name="is_healthy"
+                   {% if record.is_healthy %}checked{% endif %}>
+            <label class="form-check-label" for="is_healthy">Здорова</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a href="{{ url_for('medical_records') }}" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+{% endblock %}
+'@ | Out-File -FilePath "templates/edit_medical_record.html" -Encoding UTF8

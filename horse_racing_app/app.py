@@ -280,6 +280,29 @@ def get_horse_medical_records(horse_id):
         'is_healthy': r.is_healthy
     } for r in records])
 
+
+@app.route('/medical-records/<int:id>/edit', methods=['GET', 'POST'])
+def edit_medical_record(id):
+    record = HorseMedicalRecord.query.get_or_404(id)
+
+    if request.method == 'POST':
+        record.horse_id = request.form['horse_id']
+        record.checkup_date = datetime.strptime(request.form['checkup_date'], '%Y-%m-%d').date()
+        record.veterinarian = request.form['veterinarian']
+        record.diagnosis = request.form.get('diagnosis', '')
+        record.treatment = request.form.get('treatment', '')
+        record.next_checkup_date = datetime.strptime(request.form['next_checkup_date'],
+                                                     '%Y-%m-%d').date() if request.form.get(
+            'next_checkup_date') else None
+        record.is_healthy = 'is_healthy' in request.form
+
+        db.session.commit()
+        flash('Медицинская запись обновлена!', 'success')
+        return redirect(url_for('medical_records'))
+
+    horses = Horse.query.all()
+    return render_template('edit_medical_record.html', record=record, horses=horses)
+
 if __name__ == '__main__':
     init_database()
     app.run(host='0.0.0.0', port=5000, debug=True)
