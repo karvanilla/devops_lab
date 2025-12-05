@@ -69,7 +69,7 @@ class User(db.Model, UserMixin):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
-        return False
+        return check_password_hash(self.password_hash, password)
 
     def has_role(self, role_name):
         return any(role.name == role_name for role in self.roles)
