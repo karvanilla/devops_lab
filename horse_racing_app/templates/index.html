@@ -13,6 +13,8 @@
                     <p><strong>Количество состязаний:</strong> {{ competitions|length }}</p>
                     <p><strong>Количество жокеев:</strong> {{ jockeys_count }}</p>
                     <p><strong>Количество лошадей:</strong> {{ horses_count }}</p>
+                    <p><strong>Медицинских записей:</strong> {{ medical_records_count }}</p>
+                    <p><strong>Лошадей на лечении:</strong> {{ horses_in_treatment }}</p>
                 </div>
             </div>
             
@@ -22,7 +24,8 @@
                     <a href="{{ url_for('add_competition') }}" class="btn" style="display: block; margin-bottom: 10px;">Добавить состязание</a>
                     <a href="{{ url_for('add_jockey') }}" class="btn" style="display: block; margin-bottom: 10px;">Добавить жокея</a>
                     <a href="{{ url_for('add_horse') }}" class="btn" style="display: block; margin-bottom: 10px;">Добавить лошадь</a>
-                    <a href="{{ url_for('add_result') }}" class="btn" style="display: block;">Добавить результат</a>
+                    <a href="{{ url_for('add_result') }}" class="btn" style="display: block; margin-bottom: 10px;">Добавить результат</a>
+                    <a href="{{ url_for('add_medical_record') }}" class="btn" style="display: block;">Добавить мед. запись</a>
                 </div>
             </div>
         </div>

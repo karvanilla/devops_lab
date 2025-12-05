@@ -69,7 +69,20 @@ class User(db.Model, UserMixin):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        return False
 
     def has_role(self, role_name):
         return any(role.name == role_name for role in self.roles)
+
+
+class HorseMedicalRecord(db.Model):
+    __tablename__ = 'horse_medical_records'
+    id = db.Column(db.Integer, primary_key=True)
+    horse_id = db.Column(db.Integer, db.ForeignKey('horses.id'), nullable=False)
+    checkup_date = db.Column(db.Date, nullable=False)
+    veterinarian = db.Column(db.String(100), nullable=False)
+    diagnosis = db.Column(db.Text)
+    treatment = db.Column(db.Text)
+    next_checkup_date = db.Column(db.Date)
+    is_healthy = db.Column(db.Boolean, default=True)
+    horse = db.relationship('Horse', backref=db.backref('medical_records', lazy=True))

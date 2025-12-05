@@ -1,15 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-from models import db, Owner, Horse, Jockey, Competition, Result, Role, User
+from models import db, Owner, Horse, Jockey, Competition, Result, Role, User, HorseMedicalRecord
 from hooks import register_error_handlers
 from datetime import datetime
 from config import Config
 from flask_login import LoginManager, current_user, login_user, login_required, logout_user
 from decorators import role_required
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config.from_object(Config)
 db.init_app(app)
+migrate = Migrate(app, db)
 
 login_manager = LoginManager()
 login_manager.login_view = 'login'
@@ -233,6 +235,50 @@ def init_database():
             db.session.add(member_user)
         
         db.session.commit()
+
+
+@app.route('/medical-records')
+def medical_records():
+    records = HorseMedicalRecord.query.order_by(HorseMedicalRecord.checkup_date.desc()).all()
+    return render_template('medical_records.html', records=records)
+
+
+@app.route('/medical-records/add', methods=['GET', 'POST'])
+def add_medical_record():
+    if request.method == 'POST':
+        record = HorseMedicalRecord(
+            horse_id=request.form['horse_id'],
+            checkup_date=datetime.strptime(request.form['checkup_date'], '%Y-%m-%d').date(),
+            veterinarian=request.form['veterinarian'],
+            diagnosis=request.form.get('diagnosis', ''),
+            treatment=request.form.get('treatment', ''),
+            next_checkup_date=datetime.strptime(request.form['next_checkup_date'],
+                                                '%Y-%m-%d').date() if request.form.get('next_checkup_date') else None,
+            is_healthy='is_healthy' in request.form
+        )
+        db.session.add(record)
+        db.session.commit()
+        flash('Медицинская запись добавлена!', 'success')
+        return redirect(url_for('medical_records'))
+
+    horses = Horse.query.all()
+    return render_template('add_medical_record.html', horses=horses)
+
+
+# Можно добавить API endpoint для интеграции
+@app.route('/api/horses/<int:horse_id>/medical-records')
+def get_horse_medical_records(horse_id):
+    records = HorseMedicalRecord.query.filter_by(horse_id=horse_id).order_by(
+        HorseMedicalRecord.checkup_date.desc()).all()
+    return jsonify([{
+        'id': r.id,
+        'checkup_date': r.checkup_date.isoformat(),
+        'veterinarian': r.veterinarian,
+        'diagnosis': r.diagnosis,
+        'treatment': r.treatment,
+        'next_checkup_date': r.next_checkup_date.isoformat() if r.next_checkup_date else None,
+        'is_healthy': r.is_healthy
+    } for r in records])
 
 if __name__ == '__main__':
     init_database()

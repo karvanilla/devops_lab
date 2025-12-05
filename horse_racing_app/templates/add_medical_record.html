@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Добавить медицинскую запись</h2>
+<form method="POST">
+    <div class="form-group">
+        <label for="horse_id">Лошадь:</label>
+        <select class="form-control" id="horse_id" name="horse_id" required>
+            <option value="">Выберите лошадь</option>
+            {% for horse in horses %}
+            <option value="{{ horse.id }}">{{ horse.name }} (Владелец: {{ horse.owner.name }})</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="checkup_date">Дата осмотра:</label>
+        <input type="date" class="form-control" id="checkup_date" name="checkup_date" required>
+    </div>
+
+    <div class="form-group">
+        <label for="veterinarian">Ветеринар:</label>
+        <input type="text" class="form-control" id="veterinarian" name="veterinarian" required>
+    </div>
+
+    <div class="form-group">
+        <label for="diagnosis">Диагноз:</label>
+        <textarea class="form-control" id="diagnosis" name="diagnosis" rows="3"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="treatment">Лечение:</label>
+        <textarea class="form-control" id="treatment" name="treatment" rows="3"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="next_checkup_date">Дата следующего осмотра:</label>
+        <input type="date" class="form-control" id="next_checkup_date" name="next_checkup_date">
+    </div>
+
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="is_healthy" name="is_healthy" checked>
+        <label class="form-check-label" for="is_healthy">Лошадь здорова</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Сохранить</button>
+</form>
+{% endblock %}
